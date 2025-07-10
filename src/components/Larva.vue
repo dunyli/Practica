@@ -19,7 +19,8 @@ export default {
     x: Number,
     y: Number,
     size: Number,
-    species: String
+    species: String,
+    hatchProgress: Number
   },
   data() {
     return {
@@ -40,6 +41,9 @@ export default {
   computed: {
     larvaColor() {
       return this.colors[this.species] || '#f9f06b';
+    },
+    isHatching() {
+      return this.hatchProgress > 90;
     }
   }
 };
@@ -51,5 +55,6 @@ export default {
   border-radius: 50%;
   transform: translate(-50%, -50%);
   opacity: 0.9;
+  transition: all 0.3s ease;
 }
 </style>
