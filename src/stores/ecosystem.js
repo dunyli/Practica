@@ -429,7 +429,7 @@ export const useEcosystemStore = defineStore('ecosystem', {
         // Обновление голода
         // В цикле обновления рыб добавьте:
         fish.age += speedFactor * 0.1; // Увеличиваем возраст
-        fish.hunger = Math.min(200, fish.hunger + fish.size * 0.05 * speedFactor);
+        fish.hunger = Math.min(200, fish.hunger + fish.size * 0.02 * speedFactor);
          // 2. Рассчитываем рост
         const maxSize = this.getMaxSizeForSpecies(fish.species);
         const growthRate = 0.2; // Скорость роста
