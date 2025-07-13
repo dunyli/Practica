@@ -182,11 +182,11 @@ export const useEcosystemStore = defineStore('ecosystem', {
         // Начальные количества
         settings: {
           initialPike: 2,
-          initialSilverCarp: 3,
-          initialCrucian: 3,
-          initialCarp: 3,
+          initialSilverCarp: 4,
+          initialCrucian: 4,
+          initialCarp: 4,
           initialPlants: 20,
-          initialInvertebrates: 15
+          initialInvertebrates: 20
         },
         
         // Параметры рыб
