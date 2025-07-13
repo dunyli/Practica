@@ -9,7 +9,14 @@ export default defineConfig({
     vue(), // Основной плагин Vue
   ],
   build: {
-    outDir: 'dist'
+    outDir: 'dist',
+    assetsDir: 'assets',
+    rollupOptions: {
+      output: {
+        assetFileNames: 'assets/[name]-[hash][extname]',
+        entryFileNames: 'assets/[name]-[hash].js'
+      }
+    }
   },
   // Настройки разрешения модулей
   resolve: {
