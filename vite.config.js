@@ -9,8 +9,6 @@ export default defineConfig({
     vue(), // Основной плагин Vue
   ],
   build: {
-    outDir: 'dist',
-    assetsDir: 'assets',
     rollupOptions: {
       output: {
         assetFileNames: 'assets/[name]-[hash][extname]',
