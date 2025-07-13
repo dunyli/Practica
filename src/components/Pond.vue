@@ -379,11 +379,11 @@ const resetToDefaults = async () => {
     // Количества организмов
     settings: {
       initialPike: 2,
-      initialSilverCarp: 3,
-      initialCrucian: 3,
-      initialCarp: 3,
+      initialSilverCarp: 4,
+      initialCrucian: 4,
+      initialCarp: 4,
       initialPlants: 20,
-      initialInvertebrates: 15
+      initialInvertebrates: 20
     },
     
     // Параметры рыб
@@ -400,8 +400,8 @@ const resetToDefaults = async () => {
     
     // Радиусы
     Radius: {
-      pike: 50,
-      silver_carp: 40,
+      pike: 45,
+      silver_carp: 45,
       crucian: 45,
       carp: 45
     }
@@ -537,7 +537,7 @@ const getFishTitle = (entity) => {
   // Для личинок
   else {
     return `Икра: ${getLabel(entity.species)}
-Готовность: ${entity.hatchProgress?.toFixed(0) || '0'}%
+Зрелость: ${entity.hatchProgress?.toFixed(0) || '0'}%
 Размер: ${entity.size?.toFixed(1) || 'N/A'}
 Голод: ${entity.hunger?.toFixed(1) || 'N/A'}`;
   }
@@ -978,10 +978,7 @@ input[type="range"]::-ms-thumb {
 .ecosystem-container {
   display: flex;
   height: 100vh;
-  flex-direction: column;
-  align-items: center;
-  padding: 20px;
-  font-family: Arial, sans-serif;
+  width: 100%;
 }
 
 h1 {
@@ -990,18 +987,18 @@ h1 {
 }
 
 .control-panel {
-  display: flex;
-  gap: 30px;
-  margin-bottom: 20px;
-  width: 100%;
-  max-width: 800px;
+  width: 400px;
+  padding: 0px;
+  background: #f0f0f0;
+  border-right: 1px solid #ddd;
+  overflow-y: auto;
 }
 
 .settings, .info-panel {
   background: #f5f5f5;
   padding: 15px;
   border-radius: 8px;
-  width: 50%;
+  width: 90%;
 }
 
 .setting-item {
@@ -1048,16 +1045,19 @@ button:hover {
 }
 
 .pond-visualization {
-  width: 100%;
+  flex: 1;
   display: flex;
   justify-content: center;
+  align-items: center;
+  background: #87CEEB;
+  overflow: hidden;
 }
 
 .pond {
-  background-color: #a0c8f0;
-  border: 2px solid #1a5fb4;
   position: relative;
-  overflow: visible;
+  background-color: rgba(0, 100, 200, 0.2);
+  border-radius: 10px;
+  box-shadow: inset 0 0 50px rgba(0, 0, 100, 0.5);
 }
 
 .plant {

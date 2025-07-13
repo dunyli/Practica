@@ -2,8 +2,8 @@ import { defineStore } from 'pinia';
 
 export const useEcosystemStore = defineStore('ecosystem', {
   state: () => ({
-    width: 800,
-    height: 500,
+    width: 900,
+    height: 600,
     fishes: [],
     plants: [],
     larvae: [],
@@ -16,8 +16,8 @@ export const useEcosystemStore = defineStore('ecosystem', {
     simulationSpeed: 1,
     showSettingsPanel: true, // флаг видимости панели
     Radius: {
-      pike: 50,
-      silver_carp: 40,
+      pike: 45,
+      silver_carp: 45,
       crucian: 45,
       carp: 45
     }, // Радиус распознавания для всех рыб
@@ -36,14 +36,14 @@ export const useEcosystemStore = defineStore('ecosystem', {
         initialHunger: 30,
         reproduceHunger: 80,
         reproduceAge: 1,
-        detectionRadius: 50
+        detectionRadius: 45
       },
       silver_carp: {
         speed: 1.5,
         initialHunger: 30,
         reproduceHunger: 80,
         reproduceAge: 1,
-        detectionRadius: 40
+        detectionRadius: 45
       },
       crucian: {
         speed: 1.8,
@@ -62,11 +62,11 @@ export const useEcosystemStore = defineStore('ecosystem', {
     },
     settings: {
       initialPike: 2,
-      initialSilverCarp: 3,
-      initialCrucian: 3,
-      initialCarp: 3,
+      initialSilverCarp: 4,
+      initialCrucian: 4,
+      initialCarp: 4,
       initialPlants: 20,
-      initialInvertebrates: 15
+      initialInvertebrates: 20
 
     }
   }),
