@@ -17,7 +17,8 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url)), // Алиас для src/
-      '~': fileURLToPath(new URL('./node_modules', import.meta.url)) // Алиас для node_modules
+      '~': fileURLToPath(new URL('./node_modules', import.meta.url)), // Алиас для node_modules
+      vue: 'vue/dist/vue.esm-bundler.js'
     },
     extensions: ['.js', '.vue', '.json'] // Автодополнение расширений файлов
   },
