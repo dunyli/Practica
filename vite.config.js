@@ -5,7 +5,7 @@ import vueDevTools from 'vite-plugin-vue-devtools'
 
 export default defineConfig({
   // Базовый путь для деплоя на GitHub Pages
-  base: '/Practica/',
+  base: 'Practica',
   
   // Плагины
   plugins: [
@@ -16,8 +16,8 @@ export default defineConfig({
   // Настройки разрешения модулей
   resolve: {
     alias: {
-      '@': fileURLToPath(new URL('./src', import.meta.url)), // Алиас для src/
-      '~': fileURLToPath(new URL('./node_modules', import.meta.url)), // Алиас для node_modules
+      '@': fileURLToPath(new URL('src', import.meta.url)), // Алиас для src/
+      '~': fileURLToPath(new URL('node_modules', import.meta.url)), // Алиас для node_modules
       vue: 'vue/dist/vue.esm-bundler.js'
     },
     extensions: ['.js', '.vue', '.json'] // Автодополнение расширений файлов
