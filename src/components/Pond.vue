@@ -379,17 +379,17 @@ const resetToDefaults = async () => {
     // Количества организмов
     settings: {
       initialPike: 2,
-      initialSilverCarp: 4,
-      initialCrucian: 4,
-      initialCarp: 4,
+      initialSilverCarp: 5,
+      initialCrucian: 5,
+      initialCarp: 5,
       initialPlants: 20,
       initialInvertebrates: 20
     },
     
     // Параметры рыб
     fishSettings: {
-      pike: { speed: 2.0, initialHunger: 30, reproduceHunger: 80, reproduceAge: 1, detectionRadius: 50 },
-      silver_carp: { speed: 1.5, initialHunger: 30, reproduceHunger: 80, reproduceAge: 1, detectionRadius: 40 },
+      pike: { speed: 2.0, initialHunger: 30, reproduceHunger: 80, reproduceAge: 1, detectionRadius: 45 },
+      silver_carp: { speed: 1.5, initialHunger: 30, reproduceHunger: 80, reproduceAge: 1, detectionRadius: 45 },
       crucian: { speed: 1.8, initialHunger: 30, reproduceHunger: 80, reproduceAge: 1, detectionRadius: 45 },
       carp: { speed: 1.3, initialHunger: 30, reproduceHunger: 80, reproduceAge: 1, detectionRadius: 45 }
     },
@@ -592,7 +592,7 @@ const applySettings = () => {
     sanitizedSettings[key] = Math.max(0, Number(localSettings.value[key]) || 0);
   });
 
-  // 4. Важное: принудительно пересоздаем организмы
+  // 4. принудительно пересоздаем организмы
   store.updateSettings(sanitizedSettings);
 };
 
@@ -659,7 +659,7 @@ input[type="range"] {
   height: 20px;  /* Высота контейнера ползунка */
 }
 
-/* Стиль трека (линии) для WebKit (Chrome/Safari) */
+/* Стиль трека (линии) */
 input[type="range"]::-webkit-slider-runnable-track {
   width: 100%;
   height: 6px;
@@ -668,7 +668,7 @@ input[type="range"]::-webkit-slider-runnable-track {
   border: none;
 }
 
-/* Стиль бегунка для WebKit */
+/* Стиль бегунка */
 input[type="range"]::-webkit-slider-thumb {
   -webkit-appearance: none;
   width: 18px;

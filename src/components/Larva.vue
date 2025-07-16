@@ -9,7 +9,7 @@
       height: `${size}px`,
       backgroundColor: larvaColor
     }"
-    :title="`Личинка ${fishNames[species]}`"
+    :title="`Икра ${fishNames[species]}`"
   ></div>
 </template>
 

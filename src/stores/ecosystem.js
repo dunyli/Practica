@@ -62,9 +62,9 @@ export const useEcosystemStore = defineStore('ecosystem', {
     },
     settings: {
       initialPike: 2,
-      initialSilverCarp: 4,
-      initialCrucian: 4,
-      initialCarp: 4,
+      initialSilverCarp: 5,
+      initialCrucian: 5,
+      initialCarp: 5,
       initialPlants: 20,
       initialInvertebrates: 20
 
@@ -106,18 +106,18 @@ export const useEcosystemStore = defineStore('ecosystem', {
 
     resetAllParams() {
       this.fishSettings = {
-        pike: { speed: 2.0, initialHunger: 30, reproduceHunger: 80, reproduceAge: 3, detectionRadius: 50 },
-        silver_carp: { speed: 1.5, initialHunger: 30, reproduceHunger: 80, reproduceAge: 3, detectionRadius: 40 },
-        crucian: { speed: 1.8, initialHunger: 30, reproduceHunger: 80, reproduceAge: 3, detectionRadius: 45 },
-        carp: { speed: 1.3, initialHunger: 30, reproduceHunger: 80, reproduceAge: 3, detectionRadius: 45 }
+        pike: { speed: 2.0, initialHunger: 30, reproduceHunger: 80, reproduceAge: 1, detectionRadius: 45 },
+        silver_carp: { speed: 1.5, initialHunger: 30, reproduceHunger: 80, reproduceAge: 1, detectionRadius: 45 },
+        crucian: { speed: 1.8, initialHunger: 30, reproduceHunger: 80, reproduceAge: 1, detectionRadius: 45 },
+        carp: { speed: 1.3, initialHunger: 30, reproduceHunger: 80, reproduceAge: 1, detectionRadius: 45 }
       };
       
       this.plantParams = { maxSize: 30, growthRate: 0.15 };
       this.invertebrateParams = { maxSize: 18, speed: 0.6 };
       
       this.Radius = {
-        pike: 50,
-        silver_carp: 40,
+        pike: 45,
+        silver_carp: 45,
         crucian: 45,
         carp: 45
       };
@@ -125,16 +125,19 @@ export const useEcosystemStore = defineStore('ecosystem', {
 
     // Основной метод обновления параметров рыб
     updateAllFishParams() {
-      this.fishes.forEach(fish => {
+      this.fishes = this.fishes.map(fish => {
         const settings = this.fishSettings[fish.species];
         if (settings) {
-          fish.speed = settings.speed;
-          fish.detectionRadius = settings.detectionRadius;
-          fish.reproduceHunger = settings.reproduceHunger;
-          fish.reproduceAge = settings.reproduceAge;
-          // Обновляем голод, не превышая начальное значение
-          fish.hunger = Math.min(fish.hunger, settings.initialHunger);
+          return {
+            ...fish,
+            speed: settings.speed,
+            detectionRadius: this.Radius[fish.species] || 40, // Важно: берем текущий радиус
+            reproduceHunger: settings.reproduceHunger,
+            reproduceAge: settings.reproduceAge,
+            hunger: Math.min(fish.hunger, settings.initialHunger)
+          };
         }
+        return fish;
       });
     },
 
@@ -182,19 +185,19 @@ export const useEcosystemStore = defineStore('ecosystem', {
         // Начальные количества
         settings: {
           initialPike: 2,
-          initialSilverCarp: 4,
-          initialCrucian: 4,
-          initialCarp: 4,
+          initialSilverCarp: 5,
+          initialCrucian: 5,
+          initialCarp: 5,
           initialPlants: 20,
           initialInvertebrates: 20
         },
         
         // Параметры рыб
         fishSettings: {
-          pike: { speed: 2.0, initialHunger: 30, reproduceHunger: 80, reproduceAge: 3, detectionRadius: 50 },
-          silver_carp: { speed: 1.5, initialHunger: 30, reproduceHunger: 80, reproduceAge: 3, detectionRadius: 40 },
-          crucian: { speed: 1.8, initialHunger: 30, reproduceHunger: 80, reproduceAge: 3, detectionRadius: 45 },
-          carp: { speed: 1.3, initialHunger: 30, reproduceHunger: 80, reproduceAge: 3, detectionRadius: 45 }
+          pike: { speed: 2.0, initialHunger: 30, reproduceHunger: 80, reproduceAge: 1, detectionRadius: 45 },
+          silver_carp: { speed: 1.5, initialHunger: 30, reproduceHunger: 80, reproduceAge: 1, detectionRadius: 45 },
+          crucian: { speed: 1.8, initialHunger: 30, reproduceHunger: 80, reproduceAge: 1, detectionRadius: 45 },
+          carp: { speed: 1.3, initialHunger: 30, reproduceHunger: 80, reproduceAge: 1, detectionRadius: 45 }
         },
         
         // Параметры других организмов
@@ -203,8 +206,8 @@ export const useEcosystemStore = defineStore('ecosystem', {
         
         // Радиусы
         Radius: {
-          pike: 50,
-          silver_carp: 40,
+          pike: 45,
+          silver_carp: 45,
           crucian: 45,
           carp: 45
         }
@@ -288,11 +291,13 @@ export const useEcosystemStore = defineStore('ecosystem', {
 
     setDetectionRadius({ species, radius }) {
       this.Radius[species] = radius;
-      this.fishes.forEach(fish => {
+  
+      // Реактивно обновляем радиус у всех рыб этого вида
+      this.fishes = this.fishes.map(fish => {
         if (fish.species === species) {
-        // Создаем новый объект
-        fish.detectionRadius = radius;
-      }
+          return { ...fish, detectionRadius: radius }; // Создаем новый объект
+        }
+        return fish;
       });
     },
 
@@ -311,7 +316,7 @@ export const useEcosystemStore = defineStore('ecosystem', {
         id: Date.now() + Math.random(),
         x: Math.max(20, Math.min(this.width - 20, (Math.random() * this.width))),
         y: Math.max(20, Math.min(this.height - 20, (Math.random() * this.height))),
-        size: Math.min(this.invertebrateParams.maxSize, 10 + Math.random() * 10),
+        size: Math.min(this.invertebrateParams.maxSize, 1 + Math.random() * 30),
         color: '#555555',
         speed: this.invertebrateParams.speed
       });
@@ -398,7 +403,7 @@ export const useEcosystemStore = defineStore('ecosystem', {
         inv.y += (Math.random() - 0.5) * inv.speed * speedFactor  * 50;
         
         // Размножение зависит от скорости симуляции
-        if (Math.random() < 0.01 * speedFactor) {
+        if (Math.random() < 0.02 * speedFactor) {
           this.addInvertebrate();
         }
         
@@ -410,7 +415,7 @@ export const useEcosystemStore = defineStore('ecosystem', {
 
       this.fishes.forEach(fish => {
         if (fish.reproductionCooldown > 0) {
-          fish.reproductionCooldown -= speedFactor; // Учитываем скорость
+          fish.reproductionCooldown = Math.max(0, fish.reproductionCooldown - speedFactor); // Учитываем скорость
         }
       });
 
@@ -429,7 +434,10 @@ export const useEcosystemStore = defineStore('ecosystem', {
         // Обновление голода
         // В цикле обновления рыб добавьте:
         fish.age += speedFactor * 0.1; // Увеличиваем возраст
-        fish.hunger = Math.min(200, fish.hunger + fish.size * 0.02 * speedFactor);
+        if (fish.species == 'pike'){
+          fish.hunger = Math.min(201, fish.hunger + fish.size  / 10000 * speedFactor);
+        }
+        else fish.hunger = Math.min(201, fish.hunger + fish.size * 0.025 * speedFactor);
          // 2. Рассчитываем рост
         const maxSize = this.getMaxSizeForSpecies(fish.species);
         const growthRate = 0.2; // Скорость роста
@@ -448,7 +456,7 @@ export const useEcosystemStore = defineStore('ecosystem', {
         fish.y += Math.sin(fish.direction) * fish.speed * speedFactor * 50;
 
         // Проверка на смерть
-        if (fish.hunger >= 199) {
+        if (fish.hunger >= 200) {
             deadEntities.push(fish); // Добавляем в массив умерших
             return; // Пропускаем остальную обработку
         }
@@ -469,26 +477,32 @@ export const useEcosystemStore = defineStore('ecosystem', {
         }
         // Если рыба в процессе размножения
         if (fish.isReproducing) {
-          this.processReproduction(fish, speedFactor);
+          // Сброс зависшего размножения
+          if (fish.reproductionProgress > 5) {
+            this.cancelReproduction(fish);
+          } else {
+            this.processReproduction(fish, speedFactor);
+          }
         }
         // Условия для размножения:
         // 1. Возраст больше 3
         // 2. Уровень голода ниже 80
         // 3. Нет активного процесса размножения
-        if (fish.age >= fish.reproduceAge && fish.hunger <= fish.reproduceHunger && !fish.isReproducing && 
-          fish.reproductionCooldown <= 0) {
+        // 4. Не убегает
+        if (fish.age >= fish.reproduceAge && fish.hunger <= fish.reproduceHunger && !fish.isReproducing && !fish.isFleeing && 
+          fish.reproductionCooldown == 0) {
           this.checkReproduction(fish, speedFactor);
         }
       });
 
-      // 4. Обновление личинок
+      // 4. Обновление икры
       this.updateLarvae(speedFactor);
 
       // Удаление всех умерших существ
       deadEntities.forEach(entity => this.removeEntity(entity));
     },
 
-    // Обновление личинок
+    // Обновление икры
     updateLarvae(speedFactor) {
       this.larvae.forEach((larva, index) => {
         // Увеличиваем прогресс вылупления
@@ -498,7 +512,7 @@ export const useEcosystemStore = defineStore('ecosystem', {
         // Обновляем возраст
         larva.age += speedFactor * 0.1;
         
-        // Если личинка готова - создаем рыбу
+        // Если икра готова - создаем рыбу
         if (larva.hatchProgress >= 100) {
           this.addFish(larva.species, larva.x, larva.y, true);
           this.larvae.splice(index, 1);
@@ -527,6 +541,11 @@ export const useEcosystemStore = defineStore('ecosystem', {
     },
 
     checkReproduction(fish, speedFactor) {
+      // Если рыба уже в процессе размножения или убегает - не начинаем новый процесс
+      if (fish.isReproducing || fish.isFleeing){
+        fish.reproductionCooldown = 5;
+        return;
+      }
       // Ищем партнера в радиусе видимости
       const partner = this.fishes.find(other => {
         return other !== fish && 
@@ -566,64 +585,63 @@ export const useEcosystemStore = defineStore('ecosystem', {
 
     processReproduction(fish, speedFactor) {
       const partner = this.fishes.find(f => f.id === fish.reproductionPartnerId);
-      
-      // Если партнер исчез (например, умер) - прерываем процесс
+
+      // Если партнёр исчез — сбрасываем размножение
       if (!partner) {
-        fish.isReproducing = false;
-        fish.reproductionProgress = 0;
+        this.cancelReproduction(fish);
         return;
       }
-      
-      // Движение к целевой позиции для касания
-      const targetX = fish.reproductionTarget.x;
-      const targetY = fish.reproductionTarget.y;
-      const angle = Math.atan2(targetY - fish.y, targetX - fish.x);
-      fish.direction = angle;
-      
-      // Плавное движение с учетом скорости
+
+      // --- Настройки ---
+      const minSpacing = 5; // минимальное расстояние между рыбами при сближении
+
+      const angle = Math.atan2(partner.y - fish.y, partner.x - fish.x);
+      const targetDistance = (fish.size + partner.size) / 2 * 0.85 + minSpacing;
+
+      const targetX = partner.x - Math.cos(angle) * targetDistance;
+      const targetY = partner.y - Math.sin(angle) * targetDistance;
+
+      const moveAngle = Math.atan2(targetY - fish.y, targetX - fish.x);
+      fish.direction = moveAngle;
+
       const moveSpeed = fish.speed * speedFactor * 30;
-      fish.x += Math.cos(angle) * moveSpeed;
-      fish.y += Math.sin(angle) * moveSpeed;
-      
-      // Увеличиваем прогресс размножения
+      fish.x += Math.cos(moveAngle) * moveSpeed;
+      fish.y += Math.sin(moveAngle) * moveSpeed;
+
+      // --- Прогресс 
       fish.reproductionProgress += speedFactor;
-      
-      // Проверяем достижение позиции и достаточное время
-      const distanceToTarget = this.getDistance(fish, fish.reproductionTarget);
+
+      // --- Проверка успешного сближения ---
       const distanceToPartner = this.getDistance(fish, partner);
-      const requiredDistance = (fish.size + partner.size) / 2 * 1.1; // 110% от суммы размеров
-      
-      if (distanceToTarget < 10 && distanceToPartner < requiredDistance && 
-          fish.reproductionProgress >= 3) {
-        
-        // Создаем икру/личинку посередине между рыбами
+      const successDistance = (fish.size + partner.size) / 2 + minSpacing;
+
+      if (distanceToPartner < successDistance && fish.reproductionProgress >= 3) {
+        // Создание потомства
         const spawnX = (fish.x + partner.x) / 2;
         const spawnY = (fish.y + partner.y) / 2;
-        
         this.addLarva(spawnX, spawnY, fish.species);
-        
-        // Устанавливаем задержку
-        fish.reproductionCooldown = 20;
-        partner.reproductionCooldown = 20;
-        
-        // Тратим энергию
+
+        // Назначение задержки перед следующим размножением
+        fish.reproductionCooldown = 30;
+        partner.reproductionCooldown = 30;
+
+        // Повышение уровня голода за "затраты"
         fish.hunger = Math.min(200, fish.hunger + 30);
         partner.hunger = Math.min(200, partner.hunger + 30);
-        
-        // Сбрасываем флаги
+
+        // Сброс состояний
         fish.isReproducing = false;
         fish.reproductionProgress = 0;
+        fish.reproductionPartnerId = null;
+
         partner.isReproducing = false;
         partner.reproductionProgress = 0;
-        
-        // Удаляем временные цели
-        delete fish.reproductionTarget;
-        delete partner.reproductionTarget;
+        partner.reproductionPartnerId = null;
       }
     },
 
     //Питание
-    processFeeding(fish, index, speedFactor) {
+    processFeeding(fish, speedFactor) {
 
       // Сначала проверяем, не угрожает ли щука
       if (fish.species !== 'pike') { // Если это не щука (она ни от кого не убегает)
@@ -714,7 +732,7 @@ export const useEcosystemStore = defineStore('ecosystem', {
       this.fishes.forEach(predator => {
         if (predator.species === 'pike' && predator !== fish) {
           const distance = this.getDistance(fish, predator);
-          if (distance < predator.detectionRadius && distance < minDistance) {
+          if (distance < fish.detectionRadius && distance < minDistance) {
             minDistance = distance;
             nearestPike = predator;
           }
@@ -725,6 +743,7 @@ export const useEcosystemStore = defineStore('ecosystem', {
     },
 
     fleeFromPredator(fish, predator, speedFactor) {
+      this.cancelReproduction(fish);
       // Рассчитываем направление БЕГСТВА от щуки (противоположное направление)
       const fleeAngle = Math.atan2(
         fish.y - predator.y,
@@ -755,6 +774,28 @@ export const useEcosystemStore = defineStore('ecosystem', {
         fish.direction += (Math.random() - 0.5) * Math.PI/3;
       }
     },
+
+
+    cancelReproduction(fish) {
+      if (!fish.isReproducing) return;
+
+      const partner = this.fishes.find(f => f.id === fish.reproductionPartnerId);
+      
+      fish.isReproducing = false;
+      fish.reproductionProgress = 0;
+      fish.reproductionCooldown = 20;
+      delete fish.reproductionTarget;
+      fish.reproductionPartnerId = null;
+
+      if (partner && partner.reproductionPartnerId === fish.id) {
+        partner.isReproducing = false;
+        partner.reproductionProgress = 0;
+        partner.reproductionCooldown = 20;
+        delete partner.reproductionTarget;
+        partner.reproductionPartnerId = null;
+      }
+    },
+
 
     consumeTarget(fish, target) {
 
